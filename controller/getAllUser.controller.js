@@ -10,7 +10,10 @@ const allUerController = async (req, res) => {
       users: getAllUser,
     });
   } catch (error) {
-    res.json({ message: 'Errr' });
+    console.error(error); // এটা Error console-এ দেখাবে
+    res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: error.message });
   }
 };
 
