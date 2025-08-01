@@ -3,16 +3,16 @@ const mongoose = require('mongoose');
 const dbIsConnect = async () => {
   try {
     await mongoose
-      .connect(process.env.DB_URl)
+      .connect(process.env.DB_URL) // <-- এখানে ঠিক করো
       .then(() => {
-        console.log('db is connect sucessfully');
+        console.log('db is connect successfully');
       })
       .catch(() => {
-        console.log('db is not connect ');
+        console.log('db is not connect');
       });
   } catch (error) {
-    console.log('db is not conntect is big problem', error);
-    process.exit();
+    console.log('db is not connect is big problem', error);
+    process.exit(1);
   }
 };
 
