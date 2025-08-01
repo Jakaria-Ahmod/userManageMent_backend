@@ -15,8 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 
 // Database Connect
-dbIsConnect();
 
 app.listen(PORT, () => {
+  dbIsConnect();
   console.log(`server is runing at http://127.0.0.1:${PORT}`);
 });
