@@ -4,26 +4,38 @@ const bcrypt = require('bcrypt');
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
-    // email and password validion
-    if (!email) {
-      return res.json({ message: 'Pliese Enter Your Email' });
-    } else if (!password) {
-      return res.json({ message: 'Pliese Enter Your password' });
-    }
-    //
-    const userEmail = await User.findOne({ email });
-    if (!userEmail) {
-      return res.status(401).json({ message: 'Email not mtach' });
-    }
-    const mainPassword = await bcrypt.compare(password, userEmail.password);
-    // const userPassword = await User.findOne({ mainPassword });
 
-    if (!mainPassword) {
-      return res.status(401).json({ message: 'password not match' });
+    // Input validation
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: 'Please provide both email and password' });
     }
-    res.json({ message: ' i am login route' });
+
+    // Check user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: 'Email not match' });
+    }
+
+    // Check password
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({ message: 'Password not match' });
+    }
+
+    // Success
+    res.status(200).json({
+      message: 'Login successful',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (error) {
-    return res.json({ message: 'login feaild' });
+    console.error('Login error:', error.message);
+    res.status(500).json({ message: 'Login failed', error: error.message });
   }
 };
 
