@@ -4,13 +4,13 @@ const allUerController = async (req, res) => {
   try {
     const getAllUser = await User.find();
 
-    res.json({
+    res.status(200).json({
       message: 'all user done',
       sucess: true,
       users: getAllUser,
     });
   } catch (error) {
-    res.json({ message: 'somthing erro get in all user' });
+    res.json({ message: 'Errr' });
   }
 };
 
